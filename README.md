@@ -1,8 +1,6 @@
 
 # Virtual Memory Allocator - Tema 1
 
-**Nume:** Potoceanu Ana-Maria  
-
 
 ## Descrierea Temei
 
