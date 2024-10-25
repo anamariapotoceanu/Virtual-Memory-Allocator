@@ -1,0 +1,46 @@
+Nume: Potoceanu Ana-Maria
+Grupa: 311CAb
+Titlu + numar tema: Virtual Memory Allocator, Tema 1
+
+    Pentru implementarea alocatorului de memorie, am avut nevoie de structurile necesare pentru o lista inlantuita, pentru un nod
+care va avea doi pointeri: next si prev, dar si de cele oferite in scheletul temei.
+    In functia alloc_arena, avem initializarea arenei si am creat cu ajutorul functiei create_list, lista continuta de arena.
+    In functia alloc_block, am trat problema, initial, pe trei cazuri. Astfel, primul caz se refera la momentul cand
+lista dublu inlantuita din arena nu contine niciun element, astfel se creeaza si se adaugaun block nou, pe pozitia 0, in lista. 
+Pentru adaugarea unui block in lista, am implementat o functie ajutatoare, denumita create_block. Mai departe, am considerat
+cazul cand in lista avem un singur block. Pentru acest caz, s-a facut o verificare daca adresa primita ca parametru este una valida.
+Daca adresa este una valida, se verifica unde trebuie adaugat block-ul sau miniblock-ul. In cazul in care observam ca avem
+ocupata zona de memorie din stanga sau din dreapta, adaugam un miniblock in lista respectivului block. De asemenea, 
+se verifica, in cazul in care zonele din memorie din dreapta sau din stanga block-ului curent nu sunt ocupate, unde 
+trebuie adaugat respectivul block. In final, se afla cazul cand in lista avem doua sau mai multe block-uri. Se trateaza separat
+cazurile cand noul block, respectiv miniblock, trebuie adaugat pe prima pozitie in lista dublu inlantuita sau pe ultima pozitie.
+Avem cazul cand se adauga un block intre doua block-uri existente sau cand se unesc block-urile, devenind miniblock-uri
+pentru primul block.
+    Avem implementata functia dealloc_arena care elibereaza toata memoria alocata. Mai exact, pentru fiecare block se elibereaza
+fiecare miniblock, respectiv buffer-ul daca acesta exista, lista dublu inlantuita. Urmeaza eliberarea memoriei pentru block-ul insuri,
+apoi pentru lista dublu inlantuita continuta de arena, urmand ca in final sa eliberam memoria pentru arena.
+    Functia de free_block, trateaza si ea cele patru cazuri posibile. Astfel, parcurgem toate block-uri si miniblock-urile
+pana cand gasim miniblok-ul cu adresa corespunzatoare care trebuie eliberat. Astfel, am facut verificarea pentru
+toate posibilitatile, daca exista un unic miniblock (list_miniblock->size == 1), daca miniblock-ul este la inceput,
+daca miniblock-ul este la final. Important era cazul cand trebuia sa eliberam un miniblock de la mijlocul listei. Initial,
+am calculat cat va fi noua dimensiune pentru block. Ulterior, am creat un nou block, cu ajutorul functiei block_free, care
+doar adauga un block in lista, pe pozitia imediat urmatoare. Mai departe am facut legaturile corespunzatoare si am dat 
+noile dimeniuni celor doua liste, cea curenta si cea nou creata care apartine block-ului tocmai adaugat.
+    In cadrul functiei pmap, am parcurs toate block-urile si miniblock-urile si am afisat informatiile cerute pentru fiecare in parte.
+Pentru permisiuni, am folosit o functie denumita per, care returneaza sirul corespunzator fiecarei permisiuni, de exemplu, 
+pentru 7, va returna "RWX".
+    Pentru functia write, am folosit memcpy pentru fiecare caz in parte. Am luat separat cazul cand incepem sa scriem de la 
+inceputul unul miniblock si nu se depaseste dimensiunea acestuia. In cazul in care nu se scrie de la inceputul miniblock-ului, 
+am calculat acea diferenta. Vom incepe sa scriem de la diferenta respectiva. In cazul in care scrierea trebuie sa se realizeze
+pe mai multe miniblock-uri, parcurgem pana cand terminam de scris. De fiecare data, retinem de unde incepe, sa scriem, dar si
+cat am scris in fiecare miniblock.
+    Functia read este realizata in oglinda cu functia write. Mai exact, vom trata initial doua cazuri, urmand ca 
+pentru fiecare caz sa mai discutam doua posibilitati. Primul caz este daca citim dintr-un singur miniblock. Aici vom avea
+cazul daca citim de la inceput sau de la o anumita adresa. Mai departe, parcurgem fiecare miniblock, avem cazul
+cand citirea trebuie sa se realizeze pentru mai multe miniblock-uri.
+    Atat pentru functia write, cat si pentru functia read, am facut verificarea daca miniblock-ul respectiv are 
+permisiunile necesare.
+    In fuctia mprotect, schimbam permisiunile in fuctie de argumente primim. Pentru READ, se adauga 4, pentru WRITE 2, iar pentru
+EXEC 1.
+    Aceasta tema m-a ajutat sa inteleg cum functioneaza conceptul de lista inlantuita. De asemenea, am invatat cum se implementeaza
+o structura de date generica. Consider ca tema a contribuit la aprofundarea unor cunostinte importante care ma vor ajuta in viitor.
