@@ -2,7 +2,7 @@
 # Virtual Memory Allocator - Tema 1
 
 **Nume:** Potoceanu Ana-Maria  
-**Grupa:** 311CAb  
+
 
 ## Descrierea Temei
 
